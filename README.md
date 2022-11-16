@@ -1,4 +1,4 @@
-# Hono minimal project
+# IXO-FEEGRANT-EDGE
 
 This is a ixo feegrant daemon for Cloudflare Workers.
 
