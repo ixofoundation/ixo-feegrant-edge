@@ -1,0 +1,5 @@
+name="ixo-feegrant-edge"
+main="src/index.ts"
+
+compatibility_date = "2022-10-12"
+{ binding = "feegrantkeys", id = "d17d4ab7a91a402593555dee6d22b73e" }
