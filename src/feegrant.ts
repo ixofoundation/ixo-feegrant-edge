@@ -1,11 +1,14 @@
-import { Coin } from "./../node_modules/@cosmjs/proto-signing/node_modules/cosmjs-types/cosmos/base/v1beta1/coin.d";
-import { Timestamp } from "./../node_modules/@cosmjs/proto-signing/node_modules/cosmjs-types/google/protobuf/timestamp.d";
+
+
 import {
   cosmos,
   createSigningClient,
 } from "@ixo/impactxclient-sdk";
-
+import Long from 'long';
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+
+ import { Coin } from "./types/coin";
+ import { Timestamp } from "./types/timestamp";
 
  const feeGrantFunction = async (grantee: string,mnemonic:string ) => {
 
@@ -21,7 +24,7 @@ import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 
   const BasicAllowance = cosmos.feegrant.v1beta1.BasicAllowance;
   const address = await signer.getAccounts();
-  let timestamp = Timestamp.fromPartial({ seconds: 1, nanos: 1 });
+  let timestamp = Timestamp.fromPartial({ seconds: new Long(1), nanos: 1 });
   let spendlimit = Coin.fromPartial({ denom: "ixo", amount: "1" });
 
   const allowance = {
