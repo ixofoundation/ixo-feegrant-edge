@@ -7,3 +7,5 @@ yarn.lock
 
 # Output of 'npm pack'
 *.tgz
+src/.DS_Store
+.DS_Store
