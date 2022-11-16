@@ -1,18 +1,14 @@
 import { Coin } from "./../node_modules/@cosmjs/proto-signing/node_modules/cosmjs-types/cosmos/base/v1beta1/coin.d";
 import { Timestamp } from "./../node_modules/@cosmjs/proto-signing/node_modules/cosmjs-types/google/protobuf/timestamp.d";
 import {
-  ixo,
   cosmos,
-  createQueryClient,
   createSigningClient,
 } from "@ixo/impactxclient-sdk";
-import { getOfflineSignerProto as getOfflineSigner } from "cosmjs-utils";
-import { StdFee } from "@cosmjs/amino";
+
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 
-const feeGrant = async (grantee: string) => {
-  const mnemonic =
-    "unfold client turtle either pilot stock floor glow toward bullet car science";
+ const feeGrantFunction = async (grantee: string,mnemonic:string ) => {
+
 
   const signer = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
     prefix: "ixo",
@@ -82,3 +78,5 @@ const feeGrant = async (grantee: string) => {
 
   return response;
 };
+
+export default feeGrantFunction

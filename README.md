@@ -1,6 +1,6 @@
 # Hono minimal project
 
-This is a minimal project with [Hono](https://github.com/honojs/hono/) for Cloudflare Workers.
+This is a ixo feegrant daemon for Cloudflare Workers.
 
 ## Features
 
@@ -15,6 +15,8 @@ Install
 
 ```
 yarn install
+
+yarn add wrangler --global
 ```
 
 Develop
@@ -33,6 +35,12 @@ Deploy
 
 ```
 yarn deploy
+```
+
+Add your Mnemonic Secret key housed in the secret manager tool of cloudflare.
+
+```
+wrangler secret put FEEGRANT_MNEMONIC
 ```
 
 
