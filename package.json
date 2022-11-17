@@ -1,11 +1,12 @@
 {
   "name": "ixo-feegrant-edge",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest --verbose",
     "dev": "wrangler dev src/index.ts",
+    "build": "wrangler publish --dry-run --outdir=dist",
     "deploy": "wrangler publish src/index.ts"
   },
   "license": "MIT",
