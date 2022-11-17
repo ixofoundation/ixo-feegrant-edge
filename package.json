@@ -1,7 +1,7 @@
 {
   "name": "ixo-feegrant-edge",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest --verbose",
