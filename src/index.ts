@@ -20,8 +20,6 @@ app.get('/status', (c) => {
 
 app.post('/createfeegrant/:address', async (c) => {
 
-  const body = await c.req.json();
-  
   const address = c.req.param('address')
 
   const mnemonic = await c.env.FEEGRANT_MNEMONIC;
