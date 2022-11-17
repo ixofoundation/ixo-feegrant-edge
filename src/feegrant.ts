@@ -1,85 +1,55 @@
 
-
+// import Long from 'long';
+// import { DirectSecp256k1HdWallet} from "@cosmjs/proto-signing";
+import { DirectSecp256k1HdWallet, Registry } from "@cosmjs/proto-signing";
 import {
-  cosmos,
-  createSigningClient,
-} from "@ixo/impactxclient-sdk";
-import Long from 'long';
-import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+  defaultRegistryTypes as defaultStargateTypes,
+  SigningStargateClient,
 
- import { Coin } from "./types/coin";
- import { Timestamp } from "./types/timestamp";
-
- const feeGrantFunction = async (grantee: string,mnemonic:string ) => {
+} from "@cosmjs/stargate";
+import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant";
+import { MsgGrantAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/tx";
+import { Any } from "cosmjs-types/google/protobuf/any";
 
 
-  const signer = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
-    prefix: "ixo",
-  });
-
-  const client = await createSigningClient(
-    "https://testnet.ixo.earth/rpc/",
-    signer
+const feeGrantFunction = async (grantee: string,mnemonic:string ) => {
+  const myRegistry = new Registry(defaultStargateTypes);
+  const signer = await DirectSecp256k1HdWallet.fromMnemonic(
+    mnemonic,
+    { prefix: "ixo" }, 
   );
+  const client = await SigningStargateClient.connectWithSigner(
+    "https://testnet.ixo.earth/rpc/", // Replace with your own RPC endpoint
+    signer,
+    { registry: myRegistry },
+  );
+const address = await signer.getAccounts();
 
-  const BasicAllowance = cosmos.feegrant.v1beta1.BasicAllowance;
-  const address = await signer.getAccounts();
-  let timestamp = Timestamp.fromPartial({ seconds: new Long(1), nanos: 1 });
-  let spendlimit = Coin.fromPartial({ denom: "ixo", amount: "1" });
-
-  const allowance = {
+  // Create feegrant allowance
+  const allowance: Any = {
     typeUrl: "/cosmos.feegrant.v1beta1.BasicAllowance",
-    value: BasicAllowance.fromJSON({
-      spendLimit: [spendlimit],
-      expiration: timestamp,
-    }),
+    value: Uint8Array.from(
+      BasicAllowance.encode({
+        spendLimit: [
+          {
+            denom: "uixo",
+            amount: "100000",
+          },
+        ],
+      }).finish(),
+    ),
   };
-
-  const grant = cosmos.feegrant.v1beta1.Grant;
-  const message = {
-    typeUrl: "/cosmos.feegrant.v1beta1.Grant",
-    value: grant.fromJSON({
-      allowance: allowance,
-      grantee: grantee,
+  const grantMsg = {
+    typeUrl: "/cosmos.feegrant.v1beta1.MsgGrantAllowance",
+    value: MsgGrantAllowance.fromPartial({
       granter: address[0].address,
+      grantee: grantee,
+      allowance: allowance,
     }),
   };
+  const response = await client.signAndBroadcast(address[0].address, [grantMsg], "auto", "Create allowance ixo");
 
-  const gasUsed = await client.simulate(
-    address[0].address,
-    [message],
-    "feegrant-daemon-ixo"
-  );
+return response
 
-  const gasPriceStep = {
-    low: 0.01,
-    average: 0.025,
-    high: 0.04,
-  };
-
-  const low = gasUsed * gasPriceStep.low;
-  const average = gasUsed * gasPriceStep.average;
-  const high = gasUsed * gasPriceStep.high;
-
-  const gas = {
-    low: low,
-    average: average,
-    high: high,
-  };
-
-  const fee = {
-    amount: [
-      {
-        denom: "uixo",
-        amount: gas.high.toString(),
-      },
-    ],
-    gas: gasUsed.toString(),
-  };
-
-  const response = client.signAndBroadcast(address[0].address, [message], fee);
-
-  return response;
-};
-
+}
 export default feeGrantFunction

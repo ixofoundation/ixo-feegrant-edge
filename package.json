@@ -11,7 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "@cosmjs/amino": "^0.29.4",
-    "@ixo/impactxclient-sdk": "^0.0.5",
+    "@cosmjs/stargate": "^0.29.4",
+    "cosmjs-types": "^0.5.2",
     "hono": "^2.3.0"
   },
   "devDependencies": {
