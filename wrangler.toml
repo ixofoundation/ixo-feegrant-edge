@@ -5,6 +5,8 @@ compatibility_date = "2022-10-12"
 
 node_compat = true 
 
+minify = true
+
 kv_namespaces = [ 
          { binding = "feegrantkeys", id = "d17d4ab7a91a402593555dee6d22b73e" }
 ]
