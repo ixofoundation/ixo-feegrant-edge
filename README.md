@@ -1,6 +1,6 @@
 # IXO-FEEGRANT-EDGE
 
-This is a ixo feegrant daemon for Cloudflare Workers.
+This is a ixo feegrant daemon for Cloudflare Workers. It enables a feegrant mechanism on the edge for cosmnos based blockchains.
 
 ## Features
 
